@@ -25,8 +25,8 @@ app.get("/", (req, res) => {
 app.get("/api/users", (req, res) => {
   res.json(users);
 });
-// POST USER - create a new user
 
+// POST USER - create a new user
 app.post("/api/users", (req, res) => {
   // Within the POST request route, we create a new
   // user with the data given by the client.
@@ -63,8 +63,31 @@ app.get("/api/users/:id", (req, res, next) => {
   }
 });
 // PATCH/PUT USER by id
-// DELETE user
+app.patch("/api/user/:id", (req, res) => {
+  const post = posts.find((p, i) => {
+    if (p.id == req.params.id) {
+      for (const key in req.body) {
+        posts[i][key] = req.body[key];
+      }
+      return true;
+    }
+  });
 
+  if (post) res.json(post);
+  else next();
+});
+// DELETE user
+app.delete("/api/users/:id", (req, res) => {
+  const user = users.find((u, i) => {
+    if (u.id == req.params.id) {
+      users.splice(i, 1);
+      return true;
+    }
+  });
+
+  if (user) res.json(user);
+  else next();
+});
 //GET all Posts
 app.get("/api/posts", (req, res) => {
   res.json(posts);
